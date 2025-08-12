@@ -1,0 +1,46 @@
+/**
+ * @jest-environment jsdom
+ */
+
+const sum2 = require('./2sum');
+
+describe('sum2', () => {
+  it('should return true if two numbers in the array sum up to the target', () => {
+    expect(sum2([1, 2, 3], 5)).toBe(true);
+    expect(sum2([1, 2, 3], 4)).toBe(true);
+    expect(sum2([1, 2, 3, 4, 5], 7)).toBe(true);
+  });
+
+  it('should return false if no two numbers in the array sum up to the target', () => {
+    expect(sum2([1, 2, 3], 6)).toBe(false);
+    expect(sum2([1, 2, 3], 7)).toBe(false);
+    expect(sum2([1, 2, 3, 4, 5], 1)).toBe(false);
+  });
+
+  it('should handle empty array', () => {
+    expect(sum2([], 5)).toBe(false);
+  });
+
+  it('should handle array with one element', () => {
+    expect(sum2([5], 5)).toBe(false); // Need two distinct numbers
+  });
+
+  it('should handle array with negative numbers', () => {
+    expect(sum2([-1, 2, 3], 2)).toBe(true);
+    expect(sum2([-1, -2, 3], 1)).toBe(true);
+    expect(sum2([-1, -2, -3], -5)).toBe(true);
+    expect(sum2([-1, -2, -3], 0)).toBe(false);
+  });
+
+  it('should handle duplicate numbers', () => {
+    expect(sum2([1, 2, 2, 3], 4)).toBe(true);
+    expect(sum2([2, 2, 2, 2], 4)).toBe(true);
+    expect(sum2([2, 2, 2, 2], 5)).toBe(false);
+  });
+
+  it('should handle large arrays', () => {
+    const largeArray = Array.from({ length: 1000 }, (_, i) => i + 1);
+    expect(sum2(largeArray, 1999)).toBe(true);
+    expect(sum2(largeArray, 2001)).toBe(false);
+  });
+});
