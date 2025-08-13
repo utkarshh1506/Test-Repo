@@ -1,0 +1,84 @@
+import unittest
+
+def reverse_integer(x):
+    """Reverses an integer.
+
+    Args:
+        x: The integer to reverse.
+
+    Returns:
+        The reversed integer, or 0 if the reversed integer overflows.
+    """
+    sign = -1 if x < 0 else 1
+    x = abs(x)
+    reversed_x = 0
+    while x > 0:
+        pop = x % 10
+        x //= 10
+
+        if reversed_x > 214748364 or (reversed_x == 214748364 and pop > 7):
+            return 0
+        if reversed_x < -214748364 or (reversed_x == -214748364 and pop < -8):
+            return 0
+
+        reversed_x = reversed_x * 10 + pop
+
+    return sign * reversed_x
+
+
+class TestReverseInteger(unittest.TestCase):
+
+    def test_positive_number(self):
+        self.assertEqual(reverse_integer(123), 321)
+
+    def test_negative_number(self):
+        self.assertEqual(reverse_integer(-123), -321)
+
+    def test_number_ending_with_zero(self):
+        self.assertEqual(reverse_integer(120), 21)
+
+    def test_positive_overflow(self):
+        self.assertEqual(reverse_integer(1534236469), 0)
+
+    def test_negative_overflow(self):
+        self.assertEqual(reverse_integer(-1563847412), 0)
+
+    def test_boundary_positive(self):
+        self.assertEqual(reverse_integer(2147483647), 0)
+
+    def test_boundary_negative(self):
+        self.assertEqual(reverse_integer(-2147483648), 0)
+
+    def test_close_to_positive_overflow(self):
+         self.assertEqual(reverse_integer(1463847412), 2147483641)
+
+    def test_close_to_negative_overflow(self):
+         self.assertEqual(reverse_integer(-1463847412), -2147483641)
+
+    def test_single_digit_positive(self):
+        self.assertEqual(reverse_integer(5), 5)
+
+    def test_single_digit_negative(self):
+        self.assertEqual(reverse_integer(-5), -5)
+
+    def test_zero(self):
+        self.assertEqual(reverse_integer(0), 0)
+
+    def test_large_number_ending_with_zeroes(self):
+        self.assertEqual(reverse_integer(1000), 1)
+        self.assertEqual(reverse_integer(-1000), -1)
+
+    def test_number_with_leading_zeros_after_reversal(self):
+        self.assertEqual(reverse_integer(100), 1)
+
+    def test_negative_number_with_leading_zeros_after_reversal(self):
+        self.assertEqual(reverse_integer(-100), -1)
+
+    def test_another_overflow_case(self):
+        self.assertEqual(reverse_integer(2147483412), 2143847412)
+
+    def test_another_negative_overflow_case(self):
+        self.assertEqual(reverse_integer(-2147483412), -2143847412)
+
+if __name__ == '__main__':
+    unittest.main()
