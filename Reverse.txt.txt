@@ -1,0 +1,59 @@
+import unittest
+
+class ReverseIntegerTest(unittest.TestCase):
+
+    def test_positive_integer(self):
+        self.assertEqual(self.reverse(123), 321)
+
+    def test_negative_integer(self):
+        self.assertEqual(self.reverse(-123), -321)
+
+    def test_integer_ending_in_zero(self):
+        self.assertEqual(self.reverse(120), 21)
+
+    def test_integer_ending_in_multiple_zeros(self):
+        self.assertEqual(self.reverse(100), 1)
+
+    def test_positive_overflow(self):
+        self.assertEqual(self.reverse(1534236469), 0)
+
+    def test_negative_overflow(self):
+        self.assertEqual(self.reverse(-2147483648), 0)
+
+    def test_max_int(self):
+        self.assertEqual(self.reverse(2147483647), 0)
+
+    def test_min_int(self):
+         self.assertEqual(self.reverse(-2147483648), 0)
+
+    def test_zero(self):
+        self.assertEqual(self.reverse(0), 0)
+
+    def test_single_digit(self):
+        self.assertEqual(self.reverse(5), 5)
+
+    def test_near_overflow(self):
+        self.assertEqual(self.reverse(1463847412), 2147483641)
+
+    def test_negative_near_overflow(self):
+        self.assertEqual(self.reverse(-1463847412), -2147483641)
+
+
+    def reverse(self, x: int) -> int:
+        sign = -1 if x < 0 else 1
+        x = abs(x)
+        reversed_x = 0
+        while x > 0:
+            pop = x % 10
+            x //= 10
+            if reversed_x > 214748364 or (reversed_x == 214748364 and pop > 7):
+                return 0
+            if reversed_x < -214748364 or (reversed_x == -214748364 and pop < -8):
+                return 0
+
+            reversed_x = reversed_x * 10 + pop
+        return sign * reversed_x
+
+
+if __name__ == '__main__':
+    unittest.main()
